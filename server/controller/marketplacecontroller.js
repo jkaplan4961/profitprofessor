@@ -21,7 +21,7 @@ router.post('/create', validateSession, function (req, res) {
     const marketplaceDetails = {
         name:req.body.name,
         commission:req.body.commission,
-        shipping_price:req.body.shipping_price
+        shipping_price:req.body.shippingprice
     }
     Marketplace.create(marketplaceDetails)
     .then(marketplaceDetails => res.status(200).json(marketplaceDetails))   

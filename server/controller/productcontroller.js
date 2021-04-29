@@ -26,7 +26,8 @@ router.post('/create', function (req, res) {
         part_num:req.body.part_num,
         packaging:req.body.packaging,
         shipping_cost:req.body.shipping_cost,
-        image:req.body.image
+        image:req.body.image,
+        cost:req.body.cost
 
     }
     Product.create(ProductEntry)

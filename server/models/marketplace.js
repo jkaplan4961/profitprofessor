@@ -13,6 +13,10 @@ module.exports = function (sequelize, DataTypes) {
         type: DataTypes.FLOAT,
         allowNull: true, 
         defaultValue: 0
+    },
+    image: {
+        type: DataTypes.STRING,
+        allowNull: true
     }
 });
 return Marketplace

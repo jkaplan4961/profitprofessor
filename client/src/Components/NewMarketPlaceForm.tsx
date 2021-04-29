@@ -58,8 +58,8 @@ export default function NewMarketPlaceForm() {
         fetch("http://localhost:3001/marketplace/create", {
           method: "POST",
           body: JSON.stringify({
-            marketplacename: state.marketplacename,
-            commissionrate: state.commissionrate,
+            name: state.marketplacename,
+            commission: state.commissionrate,
             image: state.image,
             shippingprice: state.shippingprice
           }),
@@ -74,7 +74,7 @@ export default function NewMarketPlaceForm() {
             const{id}=data
 
             // Redirect
-            // window.location.href=`/marketplace/${id}`
+            window.location.href=`/marketplace/${id}`
           });
         console.log("Registering can be done");
       } else {
@@ -85,7 +85,7 @@ export default function NewMarketPlaceForm() {
     return (
         <div className="wrapper">
         <div className="form-wrapper">
-          <h2>Create Marketplace</h2>
+          <h2>Hello from Create Marketplace (newmarketplaceform)</h2>
           <form onSubmit={handleSubmit} noValidate>
             <div className="marketplacename">
               <label htmlFor="marketplacename">Marketplace Name</label>
