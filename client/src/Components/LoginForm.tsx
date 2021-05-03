@@ -58,8 +58,8 @@ export default function LoginForm() {
         });
       console.log("Registering can be done");
     } else {
-      setError({...error, username: "Account is already registered!"})
-      console.log("You cannot be registered!!!"); //show error later
+      setError({...error, username: "Invalid credentials. Try again."})
+      console.log("You cannot be logged in!!!"); //show error later
     }
   };
 

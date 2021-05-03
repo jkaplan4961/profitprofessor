@@ -1,20 +1,20 @@
-const Marketplace = require("./marketplace");
-const Product = require("./product");
-const User = require("./user");
-const Vendor = require("./vendor");
+// const Marketplace = require("./marketplace");
+// const Product = require("./product");
+// const User = require("./user");
+// const Vendor = require("./vendor");
 
-// User.hasMany(Product);
-// Product.belongsTo(User)
+// // User.hasMany(Product);
+// // Product.belongsTo(User)
 
-// Vendor.hasMany(Product);
-// Product.belongsTo(Vendor);
+// // Vendor.hasMany(Product);
+// // Product.belongsTo(Vendor);
 
-// Marketplace.hasMany(Product);
-// Product.belongsTo(Marketplace);
+// // Marketplace.hasMany(Product);
+// // Product.belongsTo(Marketplace);
 
-module.exports = {
-    Marketplace,
-    User,
-    Vendor,
-    Product
-};
+// module.exports = {
+//     Marketplace,
+//     User,
+//     Vendor,
+//     Product
+// };

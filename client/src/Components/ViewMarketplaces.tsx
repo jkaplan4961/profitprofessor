@@ -15,13 +15,14 @@ const useStyles=makeStyles(theme => ({
 }))
 
 type Marketplace= {
+    id: number;
     name: string;
     commission: number;
     shipping_price: number;
     image: string;
 }
 
-export default function MarketplaceCard() {
+export default function ViewMarketplaces() {
     const classes =useStyles()
     const [token, setToken ] = useContext(TokenContext)
     const [ marketplaces, setMarketplaces ] = useState([])
@@ -49,7 +50,7 @@ export default function MarketplaceCard() {
             {marketplaces.map((m: Marketplace) => (
             <Grid item justify="center">
                 <Card className={classes.root}>
-                    <CardActionArea>
+                    <CardActionArea onClick={() => window.location.href = `/products/-1/${m.id}`}>
                         <CardMedia
                             className={classes.media}
                             component="img"
@@ -85,7 +86,7 @@ export default function MarketplaceCard() {
                         <Typography gutterBottom variant="h5" component="h2">
                             {/* <NewMarketPlaceForm>Hello from marketplace card </NewMarketPlaceForm> */}
                         
-                        Create New Marketplace
+                        Create a New Marketplace
                         </Typography>
 
                     </CardContent>

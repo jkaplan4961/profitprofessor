@@ -41,7 +41,7 @@ export default function NewVendorForm() {
                     : setError({...error, city: ""});  
           break;
           case "state":
-            value.length < 2
+            value.length !== 2
                     ? setError({...error, state: "Enter a state!"}) 
                     : setError({...error, state: ""});
           break;
@@ -85,9 +85,7 @@ export default function NewVendorForm() {
         })
           .then((response) => response.json())
           .then((data) => {
-            console.log(token);
             const{id}=data
-
             // Redirect
             window.location.href=`/vendor/${id}`
           });
@@ -100,10 +98,10 @@ export default function NewVendorForm() {
     return (
         <div className="wrapper">
         <div className="form-wrapper">
-          <h2>Hello from new vendor (newvendorform)</h2>
+          <h2>Create New Vendor</h2>
           <form onSubmit={handleSubmit} noValidate>
             <div className="company">
-              <label htmlFor="company">vendor Name</label>
+              <label htmlFor="company">Vendor Name</label>
               <input
                 type="company"
                 name="company"
@@ -113,9 +111,61 @@ export default function NewVendorForm() {
                 <span style={{ color: "red" }}>{error.company}</span>
               )}
             </div>
-
-
-           
+            <div className="address">
+              <label htmlFor="address">Address</label>
+              <input
+                type="address"
+                name="address"
+                onChange={handleChange}
+              />
+              {error.address.length > 0 && (
+                <span style={{ color: "red" }}>{error.address}</span>
+              )}
+            </div>
+            <div className="city">
+              <label htmlFor="city">City</label>
+              <input
+                type="city"
+                name="city"
+                onChange={handleChange}
+              />
+              {error.city.length > 0 && (
+                <span style={{ color: "red" }}>{error.city}</span>
+              )}
+            </div>
+            <div className="state">
+              <label htmlFor="state">State</label>
+              <input
+                type="state"
+                name="state"
+                onChange={handleChange}
+              />
+              {error.state.length > 0 && (
+                <span style={{ color: "red" }}>{error.state}</span>
+              )}
+            </div>
+            <div className="zip">
+              <label htmlFor="zip">ZIP Code</label>
+              <input
+                type="zip"
+                name="zip"
+                onChange={handleChange}
+              />
+              {error.zip.length > 0 && (
+                <span style={{ color: "red" }}>{error.zip}</span>
+              )}
+            </div>
+            <div className="phone">
+              <label htmlFor="phone">Phone Number</label>
+              <input
+                type="phone"
+                name="phone"
+                onChange={handleChange}
+              />
+              {error.phone.length > 0 && (
+                <span style={{ color: "red" }}>{error.phone}</span>
+              )}
+            </div>
             <div className="submit">
               <button>Create Vendor!</button>
             </div>

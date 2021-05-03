@@ -9,12 +9,20 @@ router.get('/',validateSession, function(req,res){
         .catch((err) => res.status(500).json({error:err}))
 })
 
-// router.get('/name/name', function(req,res){
-//     let product=req.params.product
-//     Product.findOne({name:name})
-//         .then((product) => res.status(200).json(product))
-//         .catch((err) => res.status(500).json({error:err}))
-// })
+router.post('/filter', function(req,res){
+    let {userId,vendorId,marketplaceId}=req.body
+    const searchFilters = {
+        userId:userId
+    }
+
+    if(vendorId) searchFilters.vendorId = vendorId
+    if(marketplaceId) searchFilters.marketplaceId = marketplaceId
+    Product.findAll({
+        where: searchFilters
+    })
+        .then((product) => res.status(200).json(product))
+        .catch((err) => res.status(500).json({error:err}))
+})
 
 //CREATE A Products - product/create
 router.post('/create', function (req, res) {
@@ -27,7 +35,11 @@ router.post('/create', function (req, res) {
         packaging:req.body.packaging,
         shipping_cost:req.body.shipping_cost,
         image:req.body.image,
-        cost:req.body.cost
+        cost:req.body.cost,
+        price:req.body.price,
+        userId:req.body.userId,
+        vendorId:req.body.vendorId,
+        marketplaceId:req.body.marketplaceId
 
     }
     Product.create(ProductEntry)

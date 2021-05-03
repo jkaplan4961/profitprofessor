@@ -32,7 +32,7 @@ export default function NavBar() {
                         </Typography>
                     </Box>
                     <div className={classes.buttons}>
-                        <Button onClick={() => window.location.href = "/products"} style={{color:'white', fontWeight:'bold'}}>Products</Button>
+                        <Button onClick={() => window.location.href = "/products/-1/-1"} style={{color:'white', fontWeight:'bold'}}>Products</Button>
                     </div>
                     <div className={classes.buttons}>
                         <Button onClick={() => window.location.href = "/vendors"} style={{color:'white', fontWeight:'bold'}}>Vendors</Button>

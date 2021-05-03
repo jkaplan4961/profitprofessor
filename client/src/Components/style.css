@@ -84,7 +84,13 @@ p, div {
   .shippingprice,
   .firstname,
   .lastname,
-  .password {
+  .password,
+  .company,
+  .address,
+  .city,
+  .state,
+  .zip,
+  .phone {
     display: flex;
     flex-direction: column;
     margin-bottom: 15px;

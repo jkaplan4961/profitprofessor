@@ -13,7 +13,7 @@ module.exports = function (sequelize, DataTypes) {
         allowNull: false,         
     },
     upc:{
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
         allowNull: true,         
     },   
     part_num: {
@@ -35,7 +35,11 @@ module.exports = function (sequelize, DataTypes) {
     cost: {
         type: DataTypes.FLOAT,
         allowNull: false
-    }     
+    },   
+    price: {
+        type: DataTypes.FLOAT,
+        allowNull: false
+    }       
 });
 // Product.associate
 return Products

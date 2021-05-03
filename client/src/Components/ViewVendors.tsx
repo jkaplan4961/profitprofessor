@@ -13,6 +13,7 @@ const useStyles=makeStyles(theme => ({
 }))
 
 type Vendor= {
+    id: number;
     company: string;
     address: string;
     city: string;
@@ -21,7 +22,7 @@ type Vendor= {
     phone: string
 }
 
-export default function MarketplaceCard() {
+export default function ViewVendors() {
     const classes =useStyles()
     const [token, setToken ] = useContext(TokenContext)
     const [ vendors, setVendors ] = useState([])
@@ -46,10 +47,10 @@ export default function MarketplaceCard() {
     const renderCards=() => (
         <React.Fragment>
 
-            {vendors.map((v: Vendor) => (
+            {vendors.length > 0 && vendors.map((v: Vendor) => (
             <Grid item justify="center">
                 <Card className={classes.root}>
-                    <CardActionArea>
+                    <CardActionArea onClick={() => window.location.href = `/products/${v.id}/-1`}>
                         <CardContent>
                             <Typography gutterBottom variant="h5" component="h2">
                             {v.company}

@@ -3,7 +3,7 @@ const validateSession = require("../middleware/validate-session");
 const Vendor = require('../db').import('../models/vendor');
 
 
-router.get('/',validateSession, function(req,res){
+router.get('/', function(req,res){
     Vendor.findAll()
         .then((allVendors) => res.status(200).json(allVendors))
         .catch((err) => res.status(500).json({error:err}))
@@ -20,12 +20,11 @@ router.get('/company/:company', function(req,res){
 router.post('/create',validateSession, function (req, res) {
     const vendorDetails = {
         company:req.body.company,
-        address:req.body?.address,
-        city:req.body?.city,
-        state:req.body?.state,
-        zip:req.body?.zip,
-        phone:req.body?.phone,
-        cost:req.body?.cost
+        address:req.body.address,
+        city:req.body.city,
+        state:req.body.state,
+        zip:req.body.zip,
+        phone:req.body.phone,
     }
     Vendor.create(vendorDetails)
     .then(vendorDetails => res.status(200).json(vendorDetails))   

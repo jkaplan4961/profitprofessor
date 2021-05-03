@@ -39,7 +39,7 @@ router.post('/create', function (req, res) {
 router.post("/login", function (req, res) {
     User.findOne({
       where: {
-        email: req.body.email,
+        username: req.body.username,
       },
     })
       .then(function loginSuccess(user) {
@@ -72,5 +72,10 @@ router.post("/login", function (req, res) {
       .catch((err) => res.status(500).json({ error: err }));
   });
 
+  router.post("/me", async function (req, res) {
+    const {token } = req.body
+    const user = await jwt.decode(token, process.env.JWT_SECRET)
+    res.json({user: user})
+  });
 
 module.exports = router;
