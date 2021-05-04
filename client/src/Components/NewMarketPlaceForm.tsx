@@ -74,7 +74,7 @@ export default function NewMarketPlaceForm() {
             const{id}=data
 
             // Redirect
-            window.location.href=`/marketplace/${id}`
+            window.location.href=`/marketplaces/`
           });
         console.log("Registering can be done");
       } else {

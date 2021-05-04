@@ -87,7 +87,7 @@ export default function NewVendorForm() {
           .then((data) => {
             const{id}=data
             // Redirect
-            window.location.href=`/vendor/${id}`
+            window.location.href=`/vendors/`
           });
         console.log("Registering can be done");
       } else {

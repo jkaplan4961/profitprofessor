@@ -1,4 +1,4 @@
-import { Card, CardActionArea, CardMedia, CardContent, Typography, makeStyles, Grid, Dialog, DialogTitle, DialogContent } from '@material-ui/core'
+import { Card, CardActionArea, CardMedia, CardContent, Typography, makeStyles, Grid, Dialog, DialogTitle, DialogContent, Button } from '@material-ui/core'
 import React, { useEffect, useContext, useState } from 'react'
 import { RouteComponentProps } from 'react-router-dom'
 import { TokenContext } from '../Context/TokenContext'
@@ -98,7 +98,7 @@ export default function ViewProducts({vendorIdParam, marketplaceIdParam}: PropTy
             {products.length > 0 && products.map((p: Product) => (
             <Grid item justify="center">
                 <Card className={classes.root}>
-                    <CardActionArea>
+                    <CardActionArea onClick={() => window.location.href = `/components/ProductDetail`}>
                     <CardMedia
                             className={classes.media}
                             component="img"
@@ -132,7 +132,7 @@ export default function ViewProducts({vendorIdParam, marketplaceIdParam}: PropTy
                     
                     <CardContent>
                         <Typography gutterBottom variant="h5" component="h2">
-                            {/* <NewMarketPlaceForm>Hello from marketplace card </NewMarketPlaceForm> */}
+                         
                         
                         Create New Product
                         </Typography>
@@ -145,7 +145,16 @@ export default function ViewProducts({vendorIdParam, marketplaceIdParam}: PropTy
                 <DialogContent>
                     <NewProductForm userId={userId} vendorId={Number(vendorId)} marketplaceId={Number(marketplaceId)} />
                 </DialogContent>
+
             </Dialog>
+<div>
+<Button onClick={() => window.location.href = "./ProductDetails/"}>Complete Users Product  List</Button>
+
+            {/* <Button variant="contained" color="primary" href="#contained-buttons">
+  Complete Users Product  List
+</Button> */}
+
+</div>
         </div>
     )
 }

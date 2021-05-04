@@ -185,7 +185,7 @@ export default function NewProductForm({ userId, vendorId, marketplaceId } : Pro
             const{id}=data
 
             // Redirect
-            // window.location.href=`/vendor/${id}`
+            window.location.href=`/products/`
           });
         console.log("Registering can be done");
       } else {
@@ -330,11 +330,16 @@ export default function NewProductForm({ userId, vendorId, marketplaceId } : Pro
         </Select>
           {error.marketplaceId.length > 0 && (
             <span style={{ color: "red" }}>{error.marketplaceId}</span>
-          )}
+            )}
         </div>
+
+        <div className="lookup">
+          <button>Lookup Price on your marketplace!</button>
+          </div>
         <div className="submit">
           <button>Create Product!</button>
         </div>
+ 
       </form>
     );
     
@@ -342,26 +347,35 @@ export default function NewProductForm({ userId, vendorId, marketplaceId } : Pro
 
 /**
  * Add look up button to this form
+ * Lookupbutton diff color
  * in the on click method in button, make call to eBay API
  * fetch('ebay url', {
- *  method:...
+ * method:...
  * body:...
  * headers: auth will be API token
  * }).then(data => {
  * setState({...state, price: data.price})
  * })
  * 
+ * If match populate price
+ * If no match - Manually add price
+ * Click Create Product
+ * redirect to Product detail page 
+ * 
  * New Component:
  * ProductDetails
- * nanme
- * desc
- * manu
+ * name
+ * description
+ * manufacturer
  * upc
  * cost
- * ...
+
+FORMULA
  * price-cost-shipping-packaging = profit
  * 
  * 
  * ^^^^ add onClick to product cards in ViewProducts component to redirect to /product/:id
  * Add new page to routes in app.js
  */
+
+// If you want product to update to marketplace do on product detail page

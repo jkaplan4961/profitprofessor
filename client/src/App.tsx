@@ -12,6 +12,7 @@ import { TokenProvider } from './Context/TokenContext';
 import NewMarketPlaceForm from './Components/NewMarketPlaceForm'
 import NewProductForm from './Components/NewProductForm'
 import NewVendorForm from './Components/NewVendorForm'
+import ProductDetails from './Components/ProductDetails'
 
 interface MatchParams {
   vendorId: string;
@@ -37,9 +38,11 @@ function App() {
             <Route exact path="/Marketplace/Create"component={NewMarketPlaceForm}/>
             <Route exact path="/Product/Create"component={NewProductForm}/>
             <Route exact path="/Vendor/Create"component={NewVendorForm}/>
+            <Route exact path="/products"component={ViewProducts}/>
           </Switch>
         </Router>
       </div>
+    
     </TokenProvider>
   );
 }
