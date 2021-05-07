@@ -39,7 +39,7 @@ module.exports = function (sequelize, DataTypes) {
     price: {
         type: DataTypes.FLOAT,
         allowNull: false
-    }       
+    }
 });
 // Product.associate
 return Products

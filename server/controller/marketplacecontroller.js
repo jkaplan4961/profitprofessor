@@ -8,6 +8,13 @@ router.get('/', function(req,res){
         .catch((err) => res.status(500).json({error:err}))
 })
 
+router.get('/:id', function(req,res){
+    let id=req.params.id
+    Marketplace.findOne({id: id})
+        .then((marketplace) => res.status(200).json(marketplace))
+        .catch((err) => res.status(500).json({error:err}))
+})
+
 // problem here by name
 router.get('/name/:name', function(req,res){
     let name=req.params.name
@@ -27,5 +34,22 @@ router.post('/create', validateSession, function (req, res) {
     .then(marketplaceDetails => res.status(200).json(marketplaceDetails))   
     .catch(err => res.status(500).json({error:err}))
 });
+
+router.put('/:id',validateSession, function(req,res){
+    const id = req.params.id
+
+    Marketplace.update({name: req.body.name,
+        commission: req.body.commission,
+        image: req.body.image,
+        shipping_price: req.body.shipping_price},{where: {id: id}}).then(count => console.log("Rows updated: " + count))
+
+})
+
+router.delete('/:id', async function(req,res){
+    let id=req.params.id
+    await Marketplace.destroy({where: {id: id}})
+        .then((marketplace) => res.status(200).json(marketplace))
+        .catch((err) => res.status(500).json({error:err}))
+})
 
 module.exports = router;
