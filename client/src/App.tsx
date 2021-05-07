@@ -13,6 +13,9 @@ import NewMarketPlaceForm from './Components/NewMarketPlaceForm'
 import NewProductForm from './Components/NewProductForm'
 import NewVendorForm from './Components/NewVendorForm'
 import ProductDetails from './Components/ProductDetails'
+import EditProductForm from './Components/EditProductForm'
+import EditMarketplaceForm from './Components/EditMarketplaceForm'
+
 
 interface MatchParams {
   vendorId: string;
@@ -20,6 +23,20 @@ interface MatchParams {
 }
 
 interface MatchProps extends RouteComponentProps<MatchParams> {
+}
+
+interface ProductDetailsMatchParams {
+  productId: string;
+}
+
+interface ProductDetailsMatchProps extends RouteComponentProps<ProductDetailsMatchParams> {
+}
+
+interface MarketplaceMatchParams {
+  marketplaceId: string;
+}
+
+interface MarketplaceMatchProps extends RouteComponentProps<MarketplaceMatchParams> {
 }
 
 function App() {
@@ -39,6 +56,9 @@ function App() {
             <Route exact path="/Product/Create"component={NewProductForm}/>
             <Route exact path="/Vendor/Create"component={NewVendorForm}/>
             <Route exact path="/products"component={ViewProducts}/>
+            <Route path="/products/:productId" render={({match} : ProductDetailsMatchProps) => (<ProductDetails productId={match.params.productId} />)} />
+            <Route path="/edit/products/:productId" render={({match} : ProductDetailsMatchProps) => (<EditProductForm productId={match.params.productId} />)} />
+            <Route path="/edit/marketplaces/:marketplaceId" render={({match} : MarketplaceMatchProps) => (<EditMarketplaceForm marketplaceId={match.params.marketplaceId} />)} />
           </Switch>
         </Router>
       </div>

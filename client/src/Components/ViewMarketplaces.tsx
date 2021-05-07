@@ -1,4 +1,4 @@
-import { Card, CardActionArea, CardMedia, CardContent, Typography, makeStyles, Grid } from '@material-ui/core'
+import { Card, CardActionArea, CardActions, Button, CardMedia, CardContent, Typography, makeStyles, Grid } from '@material-ui/core'
 import { render } from '@testing-library/react'
 import React, { useEffect, useContext, useState } from 'react'
 import { TokenContext } from '../Context/TokenContext'
@@ -69,6 +69,24 @@ export default function ViewMarketplaces() {
                             </Typography>
                         </CardContent>
                     </CardActionArea>
+                    <CardActions>
+                            <Button onClick={() => window.location.href=`/edit/marketplaces/${m.id}`} size="small" color="primary">
+                            Edit
+                            </Button>
+                            <Button
+                                onClick={() => fetch(`http://localhost:3001/marketplace/${m.id}`, {
+                                    method: "DELETE",
+                                    headers: new Headers({
+                                        "content-Type": "application/json",
+                                        "Authorization": token,
+                                    })
+                                    })
+                                    .then(() => window.location.href = window.location.href)
+                                }
+                                size="small" color="secondary">
+                            Delete
+                            </Button>
+                    </CardActions>
                 </Card>    
             </Grid>
             ))}

@@ -16,9 +16,25 @@ type EbayItem = {
 
 
 interface PropTypes {
+  productId: string;
+}
+
+
+type Product= {
+  id: number;
+  name: string;
+  description: string;
+  price: number;
+  manufacturer: string;
+  upc: string;
+  cost: number;
+  part_num: string;
+  shipping_cost: number;
+  packaging:number;
+  image: string;
   userId: number;
-  vendorId: number;
   marketplaceId: number;
+  vendorId: number;
 }
 
 type Vendor= {
@@ -39,22 +55,25 @@ type Marketplace= {
     image: string;
 }
 
-export default function NewProductForm({ userId, vendorId, marketplaceId } : PropTypes) {
+export default function EditProductForm({ productId } : PropTypes) {
   const [token, setToken] = useContext(TokenContext)
-  const[state,setState] = useState({
+  const initialState : Product = {
+    id: Number(productId),
     name: "",
     description: "",
-    price: "",
+    price: 0,
     manufacturer: "",
     upc: "",
-    cost: "",
+    cost: 0,
     part_num: "",
-    shipping_cost: "",
-    packaging_cost: "",
-    product_image: "",
-    vendorId: vendorId,
-    marketplaceId: marketplaceId
-  })
+    shipping_cost: 0,
+    packaging:0,
+    image: "",
+    userId: -1,
+    marketplaceId: -1,
+    vendorId: -1
+  }
+  const [product, setProduct] = useState(initialState)
   const[error,setError] = useState({
     name: "",
     description: "",
@@ -64,13 +83,12 @@ export default function NewProductForm({ userId, vendorId, marketplaceId } : Pro
     cost: "",
     part_num: "",
     shipping_cost: "",
-    packaging_cost: "",
+    packaging: "",
     vendorId: "",
     marketplaceId: ""
   })
   const [ vendors, setVendors ] = useState([])
   const [ marketplaces, setMarketplaces ] = useState([])
-
 
   useEffect(() => {
       fetch("http://localhost:3001/vendor/",{
@@ -94,12 +112,25 @@ export default function NewProductForm({ userId, vendorId, marketplaceId } : Pro
           .then(data => {
               setMarketplaces(data)
           })
+          .then(() => {
+            fetch(`http://localhost:3001/product/${productId}`, {
+            method: "GET",
+            headers: {
+                "Authorization": token,
+                'Content-Type':"application/json",
+            }
+        })
+            .then(data => data.json())
+            .then(product => {
+                setProduct(product)
+            })
+          })
   }, [token])
 
     const handleSearch = (event: any) => {
       event.preventDefault();
       console.log(process.env.REACT_APP_EBAY_TOKEN)
-      fetch(`https://api.ebay.com/buy/browse/v1/item_summary/search?gtin=${state.upc}&=&limit=10`, {
+      fetch(`https://api.ebay.com/buy/browse/v1/item_summary/search?gtin=${product.upc}&=&limit=10`, {
         method: "GET",
         headers: {
             "Authorization": "Bearer " + process.env.REACT_APP_EBAY_TOKEN,
@@ -111,12 +142,12 @@ export default function NewProductForm({ userId, vendorId, marketplaceId } : Pro
         const item:EbayItem=data.itemSummaries[i]
         prices.push(item.price.value)
         if (i === 0) {
-          setState({...state,product_image:String(item.image.imageUrl)})
+          setProduct({...product,image:String(item.image.imageUrl)})
         }
       }
       let total:number =0 
       prices.forEach(price => total+=Number(price))
-      setState({...state,price:String(total/prices.length)})
+      setProduct({...product,price:Number(total/prices.length)})
     })
   
 
@@ -160,10 +191,10 @@ export default function NewProductForm({ userId, vendorId, marketplaceId } : Pro
                     ? setError({...error, shipping_cost: "Enter the cost!"}) 
                     : setError({...error, shipping_cost: ""});
           break;
-          case "packaging_cost":
+          case "packaging":
             isNaN(value)
-                    ? setError({...error, packaging_cost: "Enter the cost!"}) 
-                    : setError({...error, packaging_cost: ""});
+                    ? setError({...error, packaging: "Enter the cost!"}) 
+                    : setError({...error, packaging: ""});
           break;
           case "vendorId":
             isNaN(value) || value < 1
@@ -178,7 +209,7 @@ export default function NewProductForm({ userId, vendorId, marketplaceId } : Pro
         default:
           break;
       }
-      setState(Object.assign(state, {[name]: value} ));
+      setProduct(Object.assign(product, {[name]: value} ));
       console.log(error);
     };
     const handleSubmit = (event: any) => {
@@ -187,54 +218,45 @@ export default function NewProductForm({ userId, vendorId, marketplaceId } : Pro
       Object.values(error).forEach(
         (val) => val.length > 0 && (validity = false)
       );
-      if (state.name === "" || state.description === "" || state.manufacturer === "") {
+      if (product.name === "" || product.description === "" || product.manufacturer === "") {
         validity = false
       }
       if (validity === true) {
-        console.log ({name: state.name,
-          description: state.description,
-          price: state.price,
-          manufacturer: state.manufacturer,
-          upc: state.upc,
-          cost: state.cost,
-          part_num: state.part_num,
-          shipping_cost: state.shipping_cost,
-          packaging_cost: state.packaging_cost,
-          image: state.product_image,
-          userId: userId,
-          vendorId: state.vendorId,
-          marketplaceId: state.marketplaceId})
-        fetch("http://localhost:3001/product/create", {
-          method: "POST",
+        console.log ({name: product.name,
+          description: product.description,
+          price: product.price,
+          manufacturer: product.manufacturer,
+          upc: product.upc,
+          cost: product.cost,
+          part_num: product.part_num,
+          shipping_cost: product.shipping_cost,
+          packaging_cost: product.packaging,
+          image: product.image,
+          vendorId: product.vendorId,
+          marketplaceId: product.marketplaceId})
+        fetch(`http://localhost:3001/product/${product.id}`, {
+          method: "PUT",
           body: JSON.stringify({
-            name: state.name,
-            description: state.description,
-            price: state.price,
-            manufacturer: state.manufacturer,
-            upc: state.upc,
-            cost: state.cost,
-            part_num: state.part_num,
-            shipping_cost: state.shipping_cost,
-            packaging_cost: state.packaging_cost,
-            image: state.product_image,
-            userId: userId,
-            vendorId: state.vendorId,
-            marketplaceId: state.marketplaceId
+            name: product.name,
+            description: product.description,
+            price: product.price,
+            manufacturer: product.manufacturer,
+            upc: product.upc,
+            cost: product.cost,
+            part_num: product.part_num,
+            shipping_cost: product.shipping_cost,
+            packaging_cost: product.packaging,
+            image: product.image,
+            vendorId: product.vendorId,
+            marketplaceId: product.marketplaceId
           }),
           headers: new Headers({
             "content-Type": "application/json",
             "Authorization": token,
           }),
         })
-          .then((response) => response.json())
-          .then((data) => {
-            console.log(data);
-            const{id}=data
-
-            // Redirect
-            window.location.href=`/products/`
-          });
-        console.log("Registering can be done");
+        window.location.href="/products/-1/-1"
+        return false
       } else {
         setError({...error, name: "Product is already created!"})
         console.log("You cannot be registered!!!"); //show error later
@@ -247,6 +269,7 @@ export default function NewProductForm({ userId, vendorId, marketplaceId } : Pro
           <input
             type="name"
             name="name"
+            value={product.name}
             onChange={handleChange}
           />
           {error.name.length > 0 && (
@@ -258,6 +281,7 @@ export default function NewProductForm({ userId, vendorId, marketplaceId } : Pro
           <input
             type="description"
             name="description"
+            value={product.description}
             onChange={handleChange}
           />
           {error.description.length > 0 && (
@@ -269,6 +293,7 @@ export default function NewProductForm({ userId, vendorId, marketplaceId } : Pro
           <input
             type="manufacturer"
             name="manufacturer"
+            value={product.manufacturer}
             onChange={handleChange}
           />
           {error.manufacturer.length > 0 && (
@@ -280,6 +305,7 @@ export default function NewProductForm({ userId, vendorId, marketplaceId } : Pro
           <input
             type="upc"
             name="upc"
+            value={product.upc}
             onChange={handleChange}
           />
           {error.upc.length > 0 && (
@@ -291,7 +317,7 @@ export default function NewProductForm({ userId, vendorId, marketplaceId } : Pro
           <input
             type="price"
             name="price"
-            value={state.price}
+            value={product.price}
             onChange={handleChange}
           />
           {error.price.length > 0 && (
@@ -303,6 +329,7 @@ export default function NewProductForm({ userId, vendorId, marketplaceId } : Pro
           <input
             type="part_num"
             name="part_num"
+            value={product.part_num}
             onChange={handleChange}
           />
           {error.part_num.length > 0 && (
@@ -314,6 +341,7 @@ export default function NewProductForm({ userId, vendorId, marketplaceId } : Pro
           <input
             type="cost"
             name="cost"
+            value={product.cost}
             onChange={handleChange}
           />
           {error.cost.length > 0 && (
@@ -325,21 +353,23 @@ export default function NewProductForm({ userId, vendorId, marketplaceId } : Pro
           <input
             type="shipping_cost"
             name="shipping_cost"
+            value={product.shipping_cost}
             onChange={handleChange}
           />
           {error.shipping_cost.length > 0 && (
             <span style={{ color: "red" }}>{error.shipping_cost}</span>
           )}
         </div>
-        <div className="packaging_cost">
-          <label htmlFor="packaging_cost">Packaging Cost</label>
+        <div className="packaging">
+          <label htmlFor="packaging">Packaging Cost</label>
           <input
-            type="packaging_cost"
-            name="packaging_cost"
+            type="packaging"
+            name="packaging"
+            value={product.packaging}
             onChange={handleChange}
           />
-          {error.packaging_cost.length > 0 && (
-            <span style={{ color: "red" }}>{error.packaging_cost}</span>
+          {error.packaging.length > 0 && (
+            <span style={{ color: "red" }}>{error.packaging}</span>
           )}
         </div>
         <div className="product_image">
@@ -347,8 +377,8 @@ export default function NewProductForm({ userId, vendorId, marketplaceId } : Pro
           <input
             type="text"
             name="product_image"
-            value={state.product_image}
-            onChange={(e:any)=>setState({...state,product_image:e.target.value})}
+            value={product.image}
+            onChange={(e:any)=>setProduct({...product,image:e.target.value})}
           />
         </div>
         <div className="vendor">
@@ -356,10 +386,9 @@ export default function NewProductForm({ userId, vendorId, marketplaceId } : Pro
           <Select
             labelId="vendor-select"
             id="vendor-select"
-            value={state.vendorId}
-            disabled={vendorId > 0}
+            value={product.vendorId}
             onChange={e => {
-              setState({...state, vendorId: e.target.value as number});
+              setProduct({...product, vendorId: e.target.value as number});
             }}
           >
             {vendors.map((v: Vendor) => (
@@ -375,10 +404,9 @@ export default function NewProductForm({ userId, vendorId, marketplaceId } : Pro
           <Select
             labelId="marketplace-select"
             id="marketplace-select"
-            value={state.marketplaceId}
-            disabled={marketplaceId > 0}
+            value={product.marketplaceId}
             onChange={e => {
-              setState({...state, marketplaceId: e.target.value as number});
+              setProduct({...product, marketplaceId: e.target.value as number});
             }}
           >
             {marketplaces.map((m: Marketplace) => (
@@ -394,45 +422,10 @@ export default function NewProductForm({ userId, vendorId, marketplaceId } : Pro
           <button onClick={handleSearch}>Lookup Price on your marketplace!</button>
           </div>
         <div className="submit">
-          <button onClick={handleSubmit}>Create Product!</button>
+          <button onClick={handleSubmit}>Edit Product!</button>
         </div>
  
       </form>
     );
     
 }
-
-/**
- * Add look up button to this form
- * Lookupbutton diff color
- * in the on click method in button, make call to eBay API
- * fetch('ebay url', {
- * method:...
- * body:...
- * headers: auth will be API token
- * }).then(data => {
- * setState({...state, price: data.price})
- * })
- * 
- * If match populate price
- * If no match - Manually add price
- * Click Create Product
- * redirect to Product detail page 
- * 
- * New Component:
- * ProductDetails
- * name
- * description
- * manufacturer
- * upc
- * cost
-
-FORMULA
- * price-cost-shipping-packaging = profit
- * 
- * 
- * ^^^^ add onClick to product cards in ViewProducts component to redirect to /product/:id
- * Add new page to routes in app.js
- */
-
-// If you want product to update to marketplace do on product detail page

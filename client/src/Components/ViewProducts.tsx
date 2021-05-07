@@ -1,4 +1,4 @@
-import { Card, CardActionArea, CardMedia, CardContent, Typography, makeStyles, Grid, Dialog, DialogTitle, DialogContent, Button } from '@material-ui/core'
+import { Card, CardActionArea, CardMedia, CardContent, CardActions, Typography, makeStyles, Grid, Dialog, DialogTitle, DialogContent, Button } from '@material-ui/core'
 import React, { useEffect, useContext, useState } from 'react'
 import { RouteComponentProps } from 'react-router-dom'
 import { TokenContext } from '../Context/TokenContext'
@@ -26,6 +26,7 @@ type FilterBody = {
 }
 
 type Product= {
+    id: number;
     name: string;
     description: string;
     price: number;
@@ -34,6 +35,7 @@ type Product= {
     cost: number;
     part_num: string;
     shipping_cost: number;
+    packaging: number;
     image: string;
     userId: number;
     marketplaceId: number;
@@ -98,7 +100,7 @@ export default function ViewProducts({vendorIdParam, marketplaceIdParam}: PropTy
             {products.length > 0 && products.map((p: Product) => (
             <Grid item justify="center">
                 <Card className={classes.root}>
-                    <CardActionArea onClick={() => window.location.href = `/components/ProductDetail`}>
+                    <CardActionArea onClick={() => window.location.href = `/products/${p.id}`}>
                     <CardMedia
                             className={classes.media}
                             component="img"
@@ -117,6 +119,24 @@ export default function ViewProducts({vendorIdParam, marketplaceIdParam}: PropTy
                             </Typography>
                         </CardContent>
                     </CardActionArea>
+                    <CardActions>
+                            <Button onClick={() => window.location.href=`/edit/products/${p.id}`} size="small" color="primary">
+                            Edit
+                            </Button>
+                            <Button
+                                onClick={() => fetch(`http://localhost:3001/product/${p.id}`, {
+                                    method: "DELETE",
+                                    headers: new Headers({
+                                        "content-Type": "application/json",
+                                        "Authorization": token,
+                                    })
+                                    })
+                                    .then(() => window.location.href = window.location.href)
+                                }
+                                size="small" color="secondary">
+                            Delete
+                            </Button>
+                    </CardActions>
                 </Card>    
             </Grid>
             ))}
@@ -145,16 +165,7 @@ export default function ViewProducts({vendorIdParam, marketplaceIdParam}: PropTy
                 <DialogContent>
                     <NewProductForm userId={userId} vendorId={Number(vendorId)} marketplaceId={Number(marketplaceId)} />
                 </DialogContent>
-
             </Dialog>
-<div>
-<Button onClick={() => window.location.href = "./ProductDetails/"}>Complete Users Product  List</Button>
-
-            {/* <Button variant="contained" color="primary" href="#contained-buttons">
-  Complete Users Product  List
-</Button> */}
-
-</div>
         </div>
     )
 }
