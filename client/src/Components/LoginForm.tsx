@@ -52,8 +52,8 @@ export default function LoginForm() {
       })
         .then((response) => response.json())
         .then((data) => {
+          console.log(data.sessionToken)
           setToken(data.sessionToken); //may be token
-          console.log(data);
           window.location.href="/"
         });
       console.log("Registering can be done");

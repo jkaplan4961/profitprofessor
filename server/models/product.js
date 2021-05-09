@@ -1,5 +1,10 @@
 module.exports = function (sequelize, DataTypes) {
     const Products = sequelize.define("product", {
+    id: {
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
+        primaryKey: true
+    },
     name:{
         type: DataTypes.STRING,
         allowNull: false,         
@@ -17,7 +22,7 @@ module.exports = function (sequelize, DataTypes) {
         allowNull: true,         
     },   
     part_num: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
         allowNull: true
     },     
     packaging: {

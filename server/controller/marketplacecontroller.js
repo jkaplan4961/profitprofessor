@@ -10,7 +10,7 @@ router.get('/', function(req,res){
 
 router.get('/:id', function(req,res){
     let id=req.params.id
-    Marketplace.findOne({id: id})
+    Marketplace.findOne({where:{id: id}})
         .then((marketplace) => res.status(200).json(marketplace))
         .catch((err) => res.status(500).json({error:err}))
 })

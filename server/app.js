@@ -21,6 +21,21 @@ app.use('/marketplace', marketplace)
 app.use('/product', product)
 app.use('/vendor', vendor)
 
+app.get('/ebay-auth', async (req, res) => {
+    const axios = require('axios')
+    axios({
+        method: 'POST',
+        url: 'https://api.ebay.com/identity/v1/oauth2/token',
+        data: {
+            "grant_type":"refresh_token"
+        },
+        headers: {
+            "Authorization": "Basic " + Buffer.from(process.env.EBAY_ID+":"+process.env.EBAY_SECRET).toString('base64'),
+            'Content-Type':"application/json",
+        }
+      }).then(data => data.data).then(token => res.status(200).json(token)).catch(err=>{})
+})
+
 app.listen(3001, () => {
     console.log("app is listening on 3001")
 })

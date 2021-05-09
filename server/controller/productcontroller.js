@@ -22,12 +22,10 @@ router.get('/:id',function(req,res){
         .catch((err) => res.status(500).json({error:err}))
 })
 
-router.post('/filter', function(req,res){
+router.post('/filter', validateSession, function(req,res){
     let {userId,vendorId,marketplaceId}=req.body
-    const searchFilters = {
-        userId:userId
-    }
-
+    const searchFilters = {}
+    if(userId) searchFilters.userId = userId
     if(vendorId) searchFilters.vendorId = vendorId
     if(marketplaceId) searchFilters.marketplaceId = marketplaceId
     Product.findAll({

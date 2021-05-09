@@ -5,10 +5,6 @@ const User = require('../db').import('../models/user');
 const validateSession = require("../middleware/validate-session");
 
 
-// router.get('/', function (req, res){
-//     res.send("Get all users")
-// })
-
 //CREATE A USER - user/create
 router.post('/create', function (req, res) {
     User.create({
@@ -50,8 +46,8 @@ router.post("/login", function (req, res) {
           ) {
             if (matches) {
               let token = jwt.sign(
-                { id: user.id, email: user.email },
-                "test",
+                { id: user.id },
+                process.env.JWT_SECRET,
                 {
                   expiresIn: 60 * 60 * 24,
                 }
@@ -73,9 +69,15 @@ router.post("/login", function (req, res) {
   });
 
   router.post("/me", async function (req, res) {
-    const {token } = req.body
+    const { token } = req.body
     const user = await jwt.decode(token, process.env.JWT_SECRET)
-    res.json({user: user})
+    if (!user?.id) {
+      console.log(user)
+      res.status(500)
+      return
+    }
+    console.log(user)
+    await User.findOne({where:{id: user.id}}).then((user) => res.status(200).json({id: user.id, email: user.email, role: user.role, firstName: user.firstName, lastName: user.lastName }))
   });
 
 module.exports = router;

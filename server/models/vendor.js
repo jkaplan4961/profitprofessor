@@ -1,5 +1,10 @@
 module.exports = function (sequelize, DataTypes) {
     const Vendor = sequelize.define("vendor", {
+    id: {
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
+        primaryKey: true
+    },
     company:{
         type: DataTypes.STRING,
         allowNull: false,         

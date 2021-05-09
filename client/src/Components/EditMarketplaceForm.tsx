@@ -44,6 +44,7 @@ export default function EditMarketplaceForm({ marketplaceId } : PropTypes) {
   })
 
   useEffect(() => {
+    console.log("Marketplace Id :: " + marketplaceId)
       fetch(`http://localhost:3001/marketplace/${marketplaceId}`,{
         method: "GET",
         headers: new Headers({
@@ -108,12 +109,7 @@ export default function EditMarketplaceForm({ marketplaceId } : PropTypes) {
             "Authorization": token,
           }),
         })
-          .then((response) => response.json())
-          .then((data) => {
-            // Redirect
-            window.location.href=`/marketplaces/`
-          });
-        console.log("Registering can be done");
+        window.location.href=`/marketplaces/`
       } else {
         setError({...error, name: "Marketplace is already created!"})
         console.log("You cannot be registered!!!"); //show error later
@@ -169,7 +165,7 @@ export default function EditMarketplaceForm({ marketplaceId } : PropTypes) {
         </div>
       
         <div className="submit">
-          <button onClick={handleSubmit}>Edit Marketplace!</button>
+          <button onClick={handleSubmit}>Editwd Marketplace!</button>
         </div>
  
       </form>

@@ -9,6 +9,13 @@ router.get('/', function(req,res){
         .catch((err) => res.status(500).json({error:err}))
 })
 
+router.get('/:id', function(req,res){
+    let id=req.params.id
+    Vendor.findOne({where:{id: id}})
+        .then((vendor) => res.status(200).json(vendor))
+        .catch((err) => res.status(500).json({error:err}))
+})
+
 router.get('/company/:company', function(req,res){
     let company=req.params.company
     Vendor.findOne({company: company})
@@ -30,5 +37,24 @@ router.post('/create',validateSession, function (req, res) {
     .then(vendorDetails => res.status(200).json(vendorDetails))   
     .catch(err => res.status(500).json({error:err}))
 });
+
+router.put('/:id',validateSession, function(req,res){
+    const id = req.params.id
+
+    Vendor.update({company:req.body.company,
+        address:req.body.address,
+        city:req.body.city,
+        state:req.body.state,
+        zip:req.body.zip,
+        phone:req.body.phone},{where: {id: id}}).then(count => console.log("Rows updated: " + count))
+
+})
+
+router.delete('/:id', async function(req,res){
+    let id=req.params.id
+    await Vendor.destroy({where: {id: id}})
+        .then((vendor) => res.status(200).json(vendor))
+        .catch((err) => res.status(500).json({error:err}))
+})
 
 module.exports = router;

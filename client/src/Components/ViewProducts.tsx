@@ -16,11 +16,15 @@ const useStyles=makeStyles(theme => ({
 
 type User = {
     id: number;
-    username: string;
-}
+    username?: string;
+    email?: string;
+    firstName?: string;
+    lastName?: string;
+    role?: string;
+  }
 
 type FilterBody = {
-    userId: number;
+    userId?: number;
     vendorId?: number;
     marketplaceId?: number;
 }
@@ -44,51 +48,40 @@ type Product= {
 
 interface PropTypes {
     vendorIdParam: string;
-    marketplaceIdParam: string
+    marketplaceIdParam: string;
+    user: User
 }
 
-export default function ViewProducts({vendorIdParam, marketplaceIdParam}: PropTypes) {
+export default function ViewProducts({vendorIdParam, marketplaceIdParam, user}: PropTypes) {
     const classes =useStyles()
     const [token, setToken ] = useContext(TokenContext)
     const [ products, setProducts ] = useState([])
-    const [ userId, setUserId ] = useState(-1)
     const [ vendorId, setVendorId ] = useState(vendorIdParam)
     const [ marketplaceId, setMarketplaceId ] = useState(marketplaceIdParam)
     const [ popUp, setPopUp ] = useState(false)
 
     useEffect(() => {
-        fetch("http://localhost:3001/user/me", {
-            method: "POST",
-            body: JSON.stringify({
-                token: token
-            }),
-            headers: new Headers({
-                "content-Type": "application/json",
-            })
-        }).then(user => user.json()).then(user => {
-            if (user?.user?.id) {
-                setUserId(user.user.id)
-                const reqBody : FilterBody = {
-                    userId: user.user.id
-                }
-                if (Number(vendorId) > 0) reqBody.vendorId = Number(vendorId)
-                if (Number(marketplaceId) > 0) reqBody.marketplaceId = Number(marketplaceId)
-                fetch("http://localhost:3001/product/filter", {
-                    method: "POST",
-                    body: JSON.stringify(reqBody),
-                    headers: new Headers({
-                    "content-Type": "application/json",
-                    "Authorization": token,
-                    }),
-                })
-                    .then(products => products.json())
-                    .then(data => {
-                        setProducts(data)
-                    })
+        if (user.id > 0) {
+            const reqBody : FilterBody = {}
+            if (user.role?.toUpperCase() !== "ADMIN") {
+                reqBody.userId = user.id
             }
-            
-        })
-    }, [token])
+            if (Number(vendorId) > 0) reqBody.vendorId = Number(vendorId)
+            if (Number(marketplaceId) > 0) reqBody.marketplaceId = Number(marketplaceId)
+            fetch("http://localhost:3001/product/filter", {
+                method: "POST",
+                body: JSON.stringify(reqBody),
+                headers: new Headers({
+                "content-Type": "application/json",
+                "Authorization": token,
+                }),
+            })
+                .then(products => products.json())
+                .then(data => {
+                    setProducts(data)
+                })
+        }
+    }, [token, user])
 
     const createProduct =()=> {
         setPopUp(true)
@@ -163,7 +156,7 @@ export default function ViewProducts({vendorIdParam, marketplaceIdParam}: PropTy
             <Dialog title="create-product-modal" open={popUp}>
                 <DialogTitle>Create New Product</DialogTitle>
                 <DialogContent>
-                    <NewProductForm userId={userId} vendorId={Number(vendorId)} marketplaceId={Number(marketplaceId)} />
+                    <NewProductForm userId={user.id} vendorId={Number(vendorId)} marketplaceId={Number(marketplaceId)} />
                 </DialogContent>
             </Dialog>
         </div>

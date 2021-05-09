@@ -5,7 +5,10 @@ export const TokenContext = createContext()
 export const TokenProvider = (props) => {
     const [token,setToken] = useState ("") 
     useEffect(() => {
-        if (token !== "" && token !== undefined && token !== "undefined") {
+        if (token === "logout") {
+            window.localStorage.setItem("token","")
+        }
+        else if (token !== "" && token !== undefined && token !== "undefined") {
             window.localStorage.setItem("token",token)
         }
 

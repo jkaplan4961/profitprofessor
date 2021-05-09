@@ -71,7 +71,7 @@ export default function NewProductForm({ userId, vendorId, marketplaceId } : Pro
   const [ vendors, setVendors ] = useState([])
   const [ marketplaces, setMarketplaces ] = useState([])
 
-
+useEffect(()=>console.log("state",state),[state])
   useEffect(() => {
       fetch("http://localhost:3001/vendor/",{
         method: "GET",
@@ -96,9 +96,15 @@ export default function NewProductForm({ userId, vendorId, marketplaceId } : Pro
           })
   }, [token])
 
-    const handleSearch = (event: any) => {
+    const handleSearch = async (event: any) => {
       event.preventDefault();
-      console.log(process.env.REACT_APP_EBAY_TOKEN)
+      
+      // const ebayToken = await fetch(`http://localhost:3001/ebay-auth`, {
+      //     method: "GET",
+      //     headers: {
+      //         'Content-Type':"application/json",
+      //     }
+      // })
       fetch(`https://api.ebay.com/buy/browse/v1/item_summary/search?gtin=${state.upc}&=&limit=10`, {
         method: "GET",
         headers: {
@@ -107,7 +113,8 @@ export default function NewProductForm({ userId, vendorId, marketplaceId } : Pro
         }
     }).then((res) => res.json()).then((data) => {
       let prices:Array<number>=[]
-      for(let i=0;i<data.itemSummaries.length; i++){
+      console.log("From eBay:", data)
+      for(let i=0;i<data?.itemSummaries.length; i++){
         const item:EbayItem=data.itemSummaries[i]
         prices.push(item.price.value)
         if (i === 0) {
@@ -163,6 +170,11 @@ export default function NewProductForm({ userId, vendorId, marketplaceId } : Pro
           case "packaging_cost":
             isNaN(value)
                     ? setError({...error, packaging_cost: "Enter the cost!"}) 
+                    : setError({...error, packaging_cost: ""});
+          break;
+          case "product_image":
+            false
+                    ? setError({...error, packaging_cost: "Enter the image!"}) 
                     : setError({...error, packaging_cost: ""});
           break;
           case "vendorId":
@@ -232,7 +244,7 @@ export default function NewProductForm({ userId, vendorId, marketplaceId } : Pro
             const{id}=data
 
             // Redirect
-            window.location.href=`/products/`
+            window.location.href=`/products/-1/-1`
           });
         console.log("Registering can be done");
       } else {
@@ -348,7 +360,7 @@ export default function NewProductForm({ userId, vendorId, marketplaceId } : Pro
             type="text"
             name="product_image"
             value={state.product_image}
-            onChange={(e:any)=>setState({...state,product_image:e.target.value})}
+            onChange={handleChange}
           />
         </div>
         <div className="vendor">
