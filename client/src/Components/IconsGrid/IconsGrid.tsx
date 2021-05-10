@@ -1,7 +1,11 @@
 import { Card, CardContent, Grid, makeStyles } from '@material-ui/core';
 import { 
-  AiFillAmazonCircle,
-  SiGooglemybusiness } from "react-icons/ai";
+  AiFillAmazonCircle
+ } from "react-icons/ai";
+ import { 
+  TiDeviceDesktop,
+  TiChartLineOutline
+ } from "react-icons/ti";
 import React from 'react';
 import {
   FaMoneyBillWave,
@@ -39,7 +43,7 @@ const useStyles = makeStyles(theme => ({
   },
 
   icons: {
-    fontSize: '4rem',
+    fontSize: '5rem',
     textAlign: 'center',
     marginRight: '80px',
     marginLeft: '100px',
@@ -47,7 +51,7 @@ const useStyles = makeStyles(theme => ({
   },
 
   icon_1: {
-    fontSize: '4rem',
+    fontSize: '5rem',
     textAlign: 'center',
     marginRight: '80px',
     marginLeft: '100px',
@@ -83,7 +87,7 @@ const IconsGrid = () => {
             <CardContent>
               <div className={classes.card_2_3}>
                 <div>
-                  <SiGooglemybusiness className={classes.icons} />
+                  <TiDeviceDesktop className={classes.icons} />
                 </div>
                 <div>
                   <h3>Create A Vendor</h3>
@@ -97,7 +101,7 @@ const IconsGrid = () => {
             <CardContent>
               <div className={classes.card_2_3}>
                 <div>
-                  <AiFillAmazonCircle className={classes.icons} />
+                  <TiChartLineOutline className={classes.icons} />
                 </div>
                 <div>
                   <h3>Build A Product</h3>

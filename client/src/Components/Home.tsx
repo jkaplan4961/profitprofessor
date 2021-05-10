@@ -1,7 +1,15 @@
 import React from 'react'
 import Grid from './Grid'
-import { Container, Hidden, makeStyles, Button } from '@material-ui/core';
-// import MainContent from './MainContent/MainContent';
+import { Container, Hidden } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import Card from '@material-ui/core/Card';
+import CardActionArea from '@material-ui/core/CardActionArea';
+import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
+import CardMedia from '@material-ui/core/CardMedia';
+import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
+
 
 import IconsGrid from './IconsGrid/IconsGrid';
 
@@ -21,14 +29,16 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'column',
   },
   title: {
-    fontSize: '4rem',
-    color: '#fff1e6',
+    fontSize: '6rem',
+    color: '#6200ea',
   },
   text: {
     fontSize: '1.4rem',
     marginBottom: '20px',
   },
 }));
+
+
 
 const Home = () => {
   const classes = useStyles();
@@ -40,11 +50,13 @@ const Home = () => {
       <div className={classes.conatainer} >
         <Hidden mdDown>
           <h1 className={classes.title}>Profit Professor</h1>
-          <p className={classes.text}>Fatten your profits</p>
+       
 
         </Hidden>
       </div>
       <IconsGrid />
+
+      
       {/* <MainContent /> */}
     </>
       <h1>

@@ -85,7 +85,7 @@ export default function NewMarketPlaceForm() {
     return (
         <div className="wrapper">
         <div className="form-wrapper">
-          <h2>Hello from Create Marketplace (newmarketplaceform)</h2>
+          <h2>Create Marketplace</h2>
           <form onSubmit={handleSubmit} noValidate>
             <div className="marketplacename">
               <label htmlFor="marketplacename">Marketplace Name</label>
@@ -121,7 +121,7 @@ export default function NewMarketPlaceForm() {
               )}
             </div>
             <div className="marketplaceimage">
-              <label htmlFor="image">Image</label>
+              <label htmlFor="image">Enter an Image URL</label>
               <input
                 type="marketplaceimage"
                 name="image"

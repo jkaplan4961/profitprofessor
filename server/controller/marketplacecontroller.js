@@ -15,6 +15,7 @@ router.get('/:id', function(req,res){
         .catch((err) => res.status(500).json({error:err}))
 })
 
+
 // problem here by name
 router.get('/name/:name', function(req,res){
     let name=req.params.name
