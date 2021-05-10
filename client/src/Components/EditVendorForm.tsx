@@ -208,7 +208,7 @@ export default function EditVendorForm({ vendorId } : PropTypes) {
               )}
             </div>
             <div className="submit">
-              <button>Edit Vendor!</button>
+              <button>Edit Vendor</button>
             </div>
           </form>
     );

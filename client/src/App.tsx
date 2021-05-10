@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import './App.css';
 import { Switch , Route, BrowserRouter as Router, RouteComponentProps } from 'react-router-dom';
-// import Home from "./Components/Home";
+import Home from "./Components/Home";
 import ViewMarketplaces from "./Components/ViewMarketplaces";
 import ViewProducts from "./Components/ViewProducts";
 import ViewVendors from "./Components/ViewVendors";
@@ -16,6 +16,8 @@ import ProductDetails from './Components/ProductDetails'
 import EditProductForm from './Components/EditProductForm'
 import EditMarketplaceForm from './Components/EditMarketplaceForm'
 import EditVendorForm from './Components/EditVendorForm'
+import Grid from './Components/Grid'
+import { LocalDining,  } from '@material-ui/icons';
 
 interface MatchParams {
   vendorId: string;
@@ -81,10 +83,11 @@ function App() {
         <NavBar user={user} /> 
         <Router>
           <Switch>
-            {/* <Route exact path="/"component={}/> */}
+            <Route exact path="/"component={Home}/>
             <Route exact path="/marketplaces"component={ViewMarketplaces}/>
             <Route path="/products/:vendorId/:marketplaceId" render={({match} : MatchProps) => (<ViewProducts vendorIdParam={match.params.vendorId} marketplaceIdParam={match.params.marketplaceId} user={user} />)}/>
             <Route exact path="/vendors"component={ViewVendors}/>
+            <Route exact path="/Grid"component={Grid}/>
             <Route exact path="/Signup"component={SignUpForm}/>
             <Route exact path="/Login"component={LoginForm}/>
             <Route exact path="/Marketplace/Create"component={NewMarketPlaceForm}/>

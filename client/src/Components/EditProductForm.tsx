@@ -138,7 +138,8 @@ export default function EditProductForm({ productId } : PropTypes) {
         }
     }).then((res) => res.json()).then((data) => {
       let prices:Array<number>=[]
-      for(let i=0;i<data.itemSummaries.length; i++){
+      if (data?.itemSummaries) {
+        for(let i=0;i<data.itemSummaries.length; i++){
         const item:EbayItem=data.itemSummaries[i]
         prices.push(item.price.value)
         if (i === 0) {
@@ -148,6 +149,8 @@ export default function EditProductForm({ productId } : PropTypes) {
       let total:number =0 
       prices.forEach(price => total+=Number(price))
       setProduct({...product,price:Number(total/prices.length)})
+      }
+      
     })
   
 

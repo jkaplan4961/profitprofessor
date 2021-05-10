@@ -97,7 +97,7 @@ export default function ViewProducts({vendorIdParam, marketplaceIdParam, user}: 
                     <CardMedia
                             className={classes.media}
                             component="img"
-                            src={`data:image/png;base64, ${p.image}`}
+                            src={`${p.image}`}
                             title={p.name}
                         />
                         <CardContent>

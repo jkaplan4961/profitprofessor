@@ -54,7 +54,7 @@ export default function ViewMarketplaces() {
                         <CardMedia
                             className={classes.media}
                             component="img"
-                            src={`data:image/png;base64, ${m.image}`}
+                            src={`${m.image}`}
                             title={m.name}
                         />
                         <CardContent>

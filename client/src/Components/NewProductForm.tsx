@@ -253,6 +253,7 @@ useEffect(()=>console.log("state",state),[state])
       }
     };
     return (
+
       <form noValidate>
         <div className="name">
           <label htmlFor="name">Product Name</label>
@@ -410,6 +411,8 @@ useEffect(()=>console.log("state",state),[state])
         </div>
  
       </form>
+
+ 
     );
     
 }
